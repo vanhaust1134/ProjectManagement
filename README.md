@@ -1,149 +1,228 @@
-## Quy Trình Phát Triển Code
+# 🌌 Project Management - AI-Enhanced SDLC Workflow
 
-Repository là demo để quản lý cộng tác trong công việc, bảo đảm các nhánh công việc không xung đột.
-
-<img width="1424" height="751" alt="image" src="https://github.com/user-attachments/assets/6aa50c66-d265-464a-bf6d-08a536a33768" />
-
----
-
-## 🛠️ Quản Lý Nhánh (Git Branching)
-
-Để giữ source code luôn sạch sẽ và tránh xung đột (Merge Conflicts).
-
-### 📌 Quy ước đặt tên nhánh (Naming Convention)
-
-| Loại nhánh | Quy ước đặt tên | Ví dụ thực tế | Mô tả chi tiết |
-| :--- | :--- | :--- | :--- |
-| **Nhánh chính** | `main` | `main` | Nhánh production, luôn ổn định và sẵn sàng deploy. |
-| **Tính năng** | `feature/[ten-tinh-nang]` | `feature/login-ui` | Nhánh làm task thông thường. |
-| **Sửa lỗi** | `bugfix/[ten-loi]` | `bugfix/button-crash` | Sửa lỗi tính năng. |
-| **Bản vá sau golive** | `hotfix/[ten-ban-va]` | `hotfix/[security-path]`| Cập nhật bản vá, các đoạn code nhỏ. |
-
-> **Nguyên tắc:** Mọi nhánh feature/bugfix phải được chia nhỏ tối đa, giải quyết một việc duy nhất và các commit/merge request cần được đẩy lên từ 1-2 ngày code.
+<p align="left">
+  <img src="https://img.shields.io/badge/Git-F05033?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright" />
+  <img src="https://img.shields.io/badge/Azure_Static_Web_Apps-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white" alt="Azure" />
+  <img src="https://img.shields.io/badge/GitHub_Copilot-181717?style=for-the-badge&logo=githubcopilot&logoColor=white" alt="Copilot" />
+</p>
 
 ---
 
-## 🛡️ Coding
-Trước khi bắt đầu hãy clone dự án trên repository về máy
+## 📖 Tổng Quan
 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/cf565e05-8eda-4d1f-a107-8789762b75ff" />
+Tài liệu này chuẩn hóa quy trình **6 giai đoạn phát triển phần mềm (SDLC)** cùng hệ thống kiểm thử & triển khai tự động. 
 
+Mục tiêu: **"Tối ưu tốc độ phát triển nhờ AI - Đảm bảo tính ổn định."**
 
-### ⏳ Giai đoạn 1: Đồng bộ Code
-Trước khi bắt đầu code, phải thực hiện lấy code mới nhất mà đồng nghiệp đã merge vào nhánh chính ngày hôm trước về máy mình.
+---
 
-```bash
-# 1. Chuyển về nhánh chính
-git checkout main
+## 📌 Mục Lục
 
-# 2. Cập nhật code mới nhất từ GitHub về máy local
-git pull origin main
+* [Giai Đoạn 1: Lên Kế Hoạch & Phân Tích (Planning)](#giai-đoạn-1-lên-kế-hoạch--phân-tích-planning)
+* [Giai Đoạn 2: Thiết Kế Kiến Trúc & Ngữ Cảnh AI (Design)](#giai-đoạn-2-thiết-kế-kiến-trúc--ngữ-cảnh-ai-design)
+* [Giai Đoạn 3: Lập Trình Phối Hợp AI (Coding Workflow)](#giai-đoạn-3-lập-trình-phối-hợp-ai-coding-workflow)
+  * [1. Chiến lược quản lý nhánh (Git Branching)](#1-chiến-lược-quản-lý-nhánh-git-branching)
+  * [2. Chu kỳ dòng lệnh Git hàng ngày](#2-chu-kỳ-dòng-lệnh-git-hàng-ngày)
+  * [3. Kỹ thuật cất giữ code tạm thời (Git Stash)](#3-kỹ-thuật-cất-giữ-code-tạm-thời-git-stash)
+* [Giai Đoạn 4: Kiểm Thử Tự Động (Automation Test - Playwright)](#giai-đoạn-4-kiểm-thử-tự-động-automation-test---playwright)
+* [Giai Đoạn 5: Triển Khai Liên Tục (Deployment - Azure Static Web Apps)](#giai-đoạn-5-triển-khai-liên-tục-deployment---azure-static-web-apps)
+* [Giai Đoạn 6: Vận Hành & Khắc Phục Sự Cố (Maintenance & Rollback)](#giai-đoạn-6-vận-hành--khắc-phục-sự-cố-maintenance--rollback)
 
-# 3. Tạo và chuyển sang nhánh feature mới
-git checkout -b feature/ten-tinh-nang
+---
 
-# 4. Kiểm tra các file đã chỉnh sửa hoặc thêm mới
-git status
+## Giai Đoạn 1: Lên Kế Hoạch & Phân Tích (Planning)
 
-# 5. Đưa các file muốn lưu vào vùng chờ (Staging Area)
-git add .
+Chúng ta điều phối công việc của cả người và các AI Agent thông qua **GitHub Projects (Kanban Board)**.
 
-# 6. Lưu lại commit kèm theo comment rõ ràng
-git commit -m "feat: thêm giao diện đăng nhập"
-
-# 7. Kéo code main mới nhất về máy (để phòng trường hợp trong ngày có ai vừa merge)
-git fetch origin main
-
-# 8. Đưa code mới nhất từ main vào nhánh feature của bạn
-git merge origin/main
-
-# 📝 LƯU Ý: Nếu terminal báo "CONFLICT" (Xung đột code):
-# -> Mở VS Code/Cursor lên, chọn giữ code của bạn, của đồng nghiệp hoặc cả hai.
-# -> Sau khi sửa xong xuôi bằng tay, gõ tiếp:
-#    git add .
-#    git commit -m "fix: giải quyết xung đột với nhánh main"
-
-# 9. Kéo code main mới nhất về máy (phòng trường hợp trong ngày có ai vừa merge)
-git fetch origin main
-
-# 10. Đưa code mới nhất từ main vào nhánh feature của bạn
-git merge origin/main
-
-# 📝 LƯU Ý: Nếu terminal báo "CONFLICT" (Xung đột code):
-# -> Mở VS Code/Cursor lên, chọn giữ code của bạn, của đồng nghiệp hoặc cả hai.
-# -> Sau khi sửa xong xuôi bằng tay, gõ tiếp:
-#    git add .
-#    git commit -m "fix: giải quyết xung đột với nhánh main"
+```text
+  ┌───────────┐      ┌───────────────┐      ┌─────────────┐      ┌──────────┐
+  │  To Do    │ ───> │  In Progress  │ ───> │  Review/QA  │ ───> │   Done   │
+  └───────────┘      └───────────────┘      └─────────────┘      └──────────┘
 ```
 
 ---
 
-## 🛡️ Quản lý Nhánh Chính (`main`)
+## Giai Đoạn 2: Thiết Kế Kiến Trúc & Ngữ Cảnh AI (Design)
 
-Nhánh `main` được bảo vệ nghiêm ngặt bằng **Branch Protection Rules**. Code viết ra đều đi qua 3 tầng kiểm duyệt sau thì nút `Merge` mới mở khóa:
+Để AI Assistants (Cursor, GitHub Copilot) phải thiết lập các "ngữ cảnh chuẩn" trước khi viết code:
 
-### 1️⃣ Kiểm tra tự động bằng CI/CD (Status Checks)
-Mỗi khi Pull Request (PR) được tạo, hệ thống **GitHub Actions** sẽ tự động chạy workflow. Code **BẮT BUỘC** phải pass qua tất cả bài test tự động, check lỗi cú pháp (Linter) và build thành công.
-* *Nếu CI/CD báo đỏ, nút Merge sẽ bị ẩn.*
-
-### 2️⃣ AI Tự Động Review Code (Copilot Review)
-**GitHub Copilot** sẽ tự động nhảy vào PR ngay khi vừa khởi tạo để quét toàn bộ code thay đổi. Nó sẽ tìm kiếm lỗ hổng bảo mật, lỗi logic hoặc code thừa và để lại comment nhận xét trực tiếp trên PR.
-
-### 3️⃣ Phê duyệt thay đổi
-* **Bắt buộc có ít nhất 1 Developer Approve** thì PR mới được duyệt.
-* Tất cả các cuộc hội thoại, comment góp ý (kể cả của Copilot) **phải được xử lý xong (`Resolved`)**.
-* Nếu bạn hoặc AI tiếp tục push thêm commit mới sau khi đã được approve, lượt approve cũ sẽ tự động bị hủy bỏ để ép con người phải vào review lại phần mới sửa.
+1. **Giao Diện (UI/UX Design):** Đồng bộ hóa các liên kết thiết kế hệ thống từ Figma làm khuôn mẫu.
+2. **Hợp Đồng Dữ Liệu (API Contract):** Định nghĩa cấu trúc JSON API và schema cơ sở dữ liệu rõ ràng.
+3. **Cấu Hình Luật AI (`.cursorrules`):** Định nghĩa các quy chuẩn kiến trúc của dự án vào file cấu hình ở thư mục gốc để AI luôn tuân thủ nghiêm ngặt.
 
 ---
 
-## 🚨 Hướng Dẫn Xử Lý Sự Cố: Quay Lại Phiên Bản Cũ Khi Nhánh Main Bị Lỗi
+## Giai Đoạn 3: Lập Trình Phối Hợp AI (Coding Workflow)
 
-Khi một đoạn code lỗi (do người hoặc AI viết) lỡ bị merge vào nhánh `main` làm sập ứng dụng, bạn có 2 cách để đưa dự án về trạng thái an toàn trước đó.
+Trước khi bắt tay vào gõ code, hãy đảm bảo bạn đã kéo (clone) phiên bản mới nhất của repository này về máy local.
 
----
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/cf565e05-8eda-4d1f-a107-8789762b75ff" />
 
-### 🛡️ Cách 1: Sử dụng `git revert`
-* **Xử lý:** Tạo ra một commit mới có nội dung **ngược lại hoàn toàn** với commit lỗi để xóa đi commit lỗi trước đó. 
+### 1. Quản lý nhánh (Git Branching)
 
-**Các bước thực hiện:**
+Để đảm bảo không xảy ra xung đột khi nhiều người và AI cùng tạo code liên tục, toàn bộ thành viên bắt buộc phải tuân thủ quy ước đặt tên nhánh:
+
+| Tiền tố nhánh | Mục đích sử dụng | Ví dụ thực tế |
+| :--- | :--- | :--- |
+| `main` | Nhánh Production chính thức, luôn trong trạng thái cực kỳ ổn định. | `main` |
+| `feature/` | Phát triển các tính năng mới theo phân công của Task. | `feature/login-ui` |
+| `bugfix/` | Sửa lỗi phát sinh trong quá trình code và kiểm thử nội bộ. | `bugfix/button-crash` |
+| `hotfix/` | Vá lỗi khẩn cấp trực tiếp từ môi trường Production. | `hotfix/security-patch` |
+
+> 💡 **Nguyên tắc:** Các nhánh tính năng (`feature/`) phải được chia nhỏ ở mức tối đa, xử lý duy nhất một nhiệm vụ và chỉ được phép tồn tại từ 1-2 ngày trước khi merge.
+
+**Sơ đồ thể hiện các cập nhật và làm việc cộng tác trên nhánh**
+
+<img width="1213" height="761" alt="image" src="https://github.com/user-attachments/assets/5bac86d7-bca9-469d-a696-5618f9d62c7d" />
+
+
+### 2. Chu kỳ dòng lệnh Git hàng ngày
+
+Thực hiện chuẩn xác chu trình dòng lệnh sau mỗi ngày để giữ code local đồng nhất:
+
+<details>
+<summary><b>📐 Nhấp để xem chuỗi lệnh Git chi tiết từng bước</b></summary>
+
 ```bash
-# 1. Chuyển về nhánh main và cập nhật code mới nhất từ server
+# Bước 1: Trở về main và cập nhật code mới nhất từ team về máy
+git checkout main
+git pull origin main
+
+# Bước 2: Tạo một nhánh tính năng mới từ Task trên GitHub Project
+git checkout -b feature/login-ui
+
+# Bước 3: Kiểm tra trạng thái các file đã chỉnh sửa hoặc tạo mới
+git status
+
+# Bước 4: Đưa toàn bộ file thay đổi vào vùng chờ đóng gói
+git add .
+
+# Bước 5: Commit code kèm comment
+git commit -m "feat: hoàn thành giao diện màn hình đăng nhập"
+
+# Bước 7: Kéo code main mới nhất trên server về để phòng ngừa conflict
+git fetch origin main
+
+# Bước 7: Mở github web để tiến hành tạo merge request
+
+# 📝 LƯU Ý: Nếu xuất hiện xung đột (CONFLICT):
+# -> Mở trình editor để chỉnh sửa
+# -> Sau khi chỉnh sửa xong xuôi, tiến hành lưu lại:
+#    git add .
+#    git commit -m "fix: giải quyết xung đột với nhánh main"
+
+# Bước 8: Đẩy nhánh tính năng của bạn lên GitHub để bắt đầu tạo PR
+git push origin feature/login-ui
+
+```
+</details>
+
+### 3. Lưu code tạm thời (Git Stash)
+
+Xảy ra khi quên pull code mới nhất từ nhánh main hoặc cần phải chuyển sang nhánh mới để ưu tiên xử lý việc gấp
+
+<details>
+<summary><b>📦 Nhấp để xem hướng dẫn sử dụng Git Stash khi chuyển nhánh gấp</b></summary>
+
+```bash
+# 1. Cất toàn bộ code đang viết dở (bao gồm cả file mới tạo chưa theo dõi -u) vào stash tạm thời
+git stash -u
+
+# (Code cũ đã lưu, có thể tiếp tục công việc trên nhánh khác)
+git checkout main
+git checkout -b bugfix/button-crash
+# ... tiến hành fix bug & push ...
+
+# 2. Quay lại nhánh tính năng đang làm trước đó
+git checkout feature/login-ui
+
+# 3. Xem danh sách các bản lưu tạm thời đã cất (nếu cất nhiều lần)
+git stash list
+
+# 4. Lấy code cũ ra để tiếp tục gõ code và xóa bản lưu tạm này khỏi bộ nhớ chờ
+git stash pop
+
+```
+</details>
+
+---
+
+## Giai Đoạn 4: Kiểm Thử Tự Động (Automation Test - Playwright)
+
+Nhánh `main` là `protected main` để trách các yêu cầu pull trực tiếp vào production. Để merge code vào nhánh `main`, Pull Request phải qua các bước sau trước khi được pull trực tiếp lên nhánh:
+
+<img width="1200" height="628" alt="image" src="https://github.com/user-attachments/assets/d8074597-0afe-43ba-81a6-bda35f54d0fc" />
+
+```text
+[Tạo Pull Request] ──> [1. Chạy các công cụ automation test (vitetest, playwright,...)] ──> [2. Copilot Review] ──> [3. Người duyệt] ──> [MỞ KHÓA MERGE]
+```
+### 3️⃣ Bước 1: Chạy Test tự động với các công cụ automation test
+Khi PR được mở, GitHub Actions sẽ khởi tạo một máy ảo ubuntu để tự động cài đặt môi trường và chạy toàn bộ kịch bản kiểm thử giao diện đầu cuối (End-to-End Testing):
+# Lệnh tự động kích hoạt bởi GitHub Actions trong pipeline CI/CD
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+### 3️⃣ Bước 2: Quét lỗi tự động bằng Copilot Code Review
+Hệ thống GitHub Copilot AI sẽ tự động phân tích các dòng code thay đổi trong PR, chỉ ra các đoạn code viết chưa tối ưu, các lỗ hổng bảo mật tiềm ẩn và đề xuất code sửa đổi trực tiếp dưới dạng bình luận trên PR.
+
+### 3️⃣ Chốt chặn 3: Phê duyệt user
+* PR bắt buộc phải nhận được ít nhất **1 lượt Approve (Duyệt)** từ thành viên khác có quyền ghi (Write Access) trong dự án.
+* Mọi thảo luận và bắt lỗi trên PR bắt buộc phải được giải quyết xong (chuyển trạng thái sang `Resolved`).
+
+---
+
+## Giai Đoạn 5: CI/CD (Deployment - Azure Static Web Apps)
+
+Dự án áp dụng quy trình đóng gói và triển khai tự động trên các hosting có kết nối được với `GitHub Actions`:
+
+<img width="1900" height="894" alt="image" src="https://github.com/user-attachments/assets/f6a1591b-45b1-42f4-abc1-3d83d505f44e" />
+
+1. Ngay khi PR được merge thành công vào nhánh chính `main`, một workflow GitHub Actions sẽ tự động biên dịch dự án.
+2. Bản build ổn định này sẽ được đẩy tự động lên đám mây **Azure Static Web Apps (ASWA)**.
+3. Ứng dụng thực tế ngoài môi trường Production sẽ được cập nhật phiên bản mới.
+---
+
+## Giai Đoạn 6: Vận Hành & Khắc Phục Sự Cố (Maintenance & Rollback)
+
+Khi phát hiện code lỗi nghiêm trọng lỡ bị đưa lên nhánh `main` và làm ảnh hưởng trực tiếp đến người dùng ngoài thực tế, chúng ta áp dụng 1 trong 2 phương án khôi phục sau:
+
+### 🛡️ Phương án 1: Sử dụng `git revert`
+Tạo ra một commit mới để roll back hoàn toàn thay đổi của commit lỗi. Sẽ ghi nhận commit
+
+```bash
+# 1. Tạo một nhánh hotfix từ main mới nhất
 git checkout main
 git pull origin main
 git checkout -b hotfix/revert-error
 
-# 2. Xem lịch sử commit để lấy ID (7 ký tự đầu) của commit gây lỗi
+# 2. Xem lịch sử commit để lấy mã ID (7 ký tự đầu) của commit gây lỗi
 git log --oneline
-# Console hiển thị:
-# c123456 (HEAD -> main) feat: code lỗi của AI làm crash app
-# a789101 feat: phiên bản cũ vận hành bình thường
+# Ví dụ: c123456 là commit lỗi, a789101 là phiên bản ổn định trước đó.
 
-# 3. Tiến hành reverse commit lỗi (Điền mã commit LỖI)
+# 3. Chạy lệnh revert (Điền mã của commit gây lỗi)
 git revert c123456
 
-# (Lúc này Git sẽ tự động mở cửa sổ bắt nhập tin nhắn, bạn cứ lưu và đóng lại)
-
-# 4. Đẩy code sửa lỗi lên GitHub để cập nhật cho cả team
+# 4. Đẩy nhánh hotfix lên GitHub để mở PR khẩn cấp xin duyệt
 git push origin hotfix/revert-error
-
 ```
-### 🛡️ Cách 2: Sử dụng `git reset --hard`
-* **Xử lý:** Xóa hoàn toàn phiên bản lỗi.
 
-**Các bước thực hiện:**
+### 🛡️ Phương án 2: Sử dụng `git reset --hard`
+Không ghi nhận commit và xóa hoàn toàn phiên bản lỗi. Dùng trong trường hợp không xác định được lỗi
+
 ```bash
-# 1. Chuyển về nhánh main
+# 1. Tạo nhánh hotfix
 git checkout main
 git pull origin main
 git checkout -b hotfix/reset-error
 
-# 2. Xem lịch sử commit để lấy ID của commit ổn định gần nhất
-git log --oneline
-# Ví dụ chọn commit là: a789101
-
-# 3. Ép nhánh main trả ngược phiên bản vị trí commit (Điền mã commit trên)
+# 2. Ép nhánh quay ngược về đúng vị trí phiên bản an toàn (Điền mã của commit ổn định)
 git reset --hard a789101
 
-# 4. Vì máy local bây giờ đang "cũ" hơn trên server, phải dùng "vũ lực" để đè code lên
-git push origin hotfix/reset-error
+# 3. Sử dụng lực ép (force push) để đè lại lịch sử mới lên server cứu hộ
+git push origin hotfix/reset-error --force
 ```
