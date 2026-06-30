@@ -63,6 +63,14 @@ export default function Dashboard({ projects, tasks, users, setTab, setSelectedP
 
   return (
     <div ref={containerRef}>
+      {/* Page Header */}
+      <div className="page-header">
+        <div className="header-title">
+          <h1>Dashboard</h1>
+          <p>Welcome back! Here is a summary of your workspace activities.</p>
+        </div>
+      </div>
+
       <div className="stats-grid">
         <div className="glass-card stat-card">
           <div className="stat-icon-wrapper" style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)' }}>
